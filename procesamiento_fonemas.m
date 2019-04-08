@@ -14,8 +14,8 @@ x=x/(abs(min(x)));
 %zs=sum(abs(diff(sign(s))))/512/2;
 %ze=sum(abs(diff(sign(e))))/512/2;
 %zsi=sum(abs(diff(sign(si))))/512/2;
-WL=256;
-WD=8;
+WL=1024;
+WD=20;
 NW=floor((L-WL)/WD);%Obtiene numero de Ventanas
 E=zeros(NW,1);%Declara arreglo
 Z=zeros(NW,1);%Declara arreglo
@@ -24,10 +24,11 @@ for i=1:NW
     E(i)=y'*y/WL;%saca energia de ventana
     Z(i)=sum(abs(diff(sign(y))))/WL/2;%saca energia de ventana
 end
+E=10*log(E);
 t=(0:L-1)'/fs;
 t1=(floor(WL/2)+WD*(0:NW-1)')/fs;%saca las partes en x de ventana
-E=(E-min(E))/(max(E)-min(E));%Ubica en el rango 0 a 1
-Z=(Z-min(Z))/(max(Z)-min(Z));
+E=(E-min(E))/((max(E)-min(E)));%Ubica en el rango 0 a 1
+Z=(Z-min(Z))/((max(Z)-min(Z)));
 %subplot(2,1,1);
 hold on
 plot(t,x,'Color','red')
@@ -44,19 +45,21 @@ if((E(1)<0.2)&&(Z(1)>0.32))
 else
     silencio(1)=0;
 end
-for j=2:length(Z)-1
-    if(E(j)<0.216)
-        if(((Z(j)>Z(j+1))&&(Z(j+1)<0.18)))% || ((Z(j)<Z(j+1)) && (Z(j+1)<0.7)))%anterior mayor que la presente 
+for j=length(Z)-1:-1:2
+    if(E(j)<0.5)
+        if(((Z(j)>Z(j-1))&&(Z(j-1)<0.15)))% || ((Z(j)<Z(j+1)) && (Z(j+1)<0.7)))%anterior mayor que la presente 
             silencio(j+1)=0;%Se apaga
-        elseif ((Z(j)<Z(j+1))&&(Z(j+1)>0.35))%la anterior menor que la presente
-            silencio(j+1)=1;%prende            
+        elseif ((Z(j)<Z(j-1))&&(Z(j-1)>0.3))%la anterior menor que la presente
+            silencio(j-1)=1;%prende            
         else
-            silencio(j+1)=silencio(j);%se mantiene sobre la anterior 
+            silencio(j-1)=silencio(j);%se mantiene sobre la anterior 
         end        
     else
         silencio(j)=0;
     end
 end
+
+
 no_vocalizados=zeros(length(Z),1);
 if ((Z(1)>0.65) && (E(1))<0.6)
     no_vocalizados(1)=1;
@@ -64,7 +67,7 @@ else
     no_vocalizados(1)=0;
 end
 for k=length(Z):-1:2
-    if(Z(k)>0.6)
+    if(Z(k)>0.3)
         if((E(k)<E(k-1)) && (E(k-1)>0.45)&&(E(k-1)<0.71))
             no_vocalizados(k+1)=1;
         elseif(((E(k)>E(k-1)) && (E(k-1)<0.45))||((E(k)<E(k-1))&&(E(k-1)>0.7)))
@@ -78,8 +81,15 @@ for k=length(Z):-1:2
     
 end
 for k=1:length(Z)-1
-    if((E(k)<E(k+1)) && (E(k+1)>0.45)&&(E(k+1)<0.71))
-       no_vocalizados(k+1)=1;
+    if(Z(k)>0.3)
+        if((E(k)<E(k+1)) && (E(k+1)>0.45)&&(E(k+1)<0.71))
+        no_vocalizados(k+1)=1;
+        end
+    end
+    if(E(k)<0.5)
+    if ((Z(k)<Z(k+1))&&(Z(k+1)>0.3))%la anterior menor que la presente
+            silencio(k+1)=1;%prende            
+    end
     end
 end     
 vocalizados=zeros(length(Z),1);
@@ -89,7 +99,6 @@ vocalizados=zeros(length(Z),1);
     else
         vocalizados(k)=0;
     end
-    
 end
 figure('Name','Salida');
 hold on;
