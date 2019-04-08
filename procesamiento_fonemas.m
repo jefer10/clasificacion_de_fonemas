@@ -1,6 +1,6 @@
 clear all;
 close all;
-[x1,fs]=audioread('vozkatheinf.wav');
+[x1,fs]=audioread('vozjefer.wav');
 x=x1(:,2);
 %[x,fs]=audioread('vozfemenina.wav');
 L=length(x);
@@ -21,7 +21,7 @@ E=zeros(NW,1);%Declara arreglo
 Z=zeros(NW,1);%Declara arreglo
 for i=1:NW
     y=x((i-1)*WD+(1:WL));%asigna la ventana 
-    E(i)=((y')*y)/WL;%saca energia de ventana
+    E(i)=y'*y/WL;%saca energia de ventana
     Z(i)=sum(abs(diff(sign(y))))/WL/2;%saca energia de ventana
 end
 t=(0:L-1)'/fs;
