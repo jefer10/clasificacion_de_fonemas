@@ -45,21 +45,19 @@ if((E(1)<0.2)&&(Z(1)>0.32))
 else
     silencio(1)=0;
 end
-for j=length(Z)-1:-1:2
-    if(E(j)<0.5)
-        if(((Z(j)>Z(j-1))&&(Z(j-1)<0.15)))% || ((Z(j)<Z(j+1)) && (Z(j+1)<0.7)))%anterior mayor que la presente 
+for j=2:length(Z)-1
+    if(E(j)<0.216)
+        if(((Z(j)>Z(j+1))&&(Z(j+1)<0.18)))% || ((Z(j)<Z(j+1)) && (Z(j+1)<0.7)))%anterior mayor que la presente 
             silencio(j+1)=0;%Se apaga
-        elseif ((Z(j)<Z(j-1))&&(Z(j-1)>0.3))%la anterior menor que la presente
-            silencio(j-1)=1;%prende            
+        elseif ((Z(j)<Z(j+1))&&(Z(j+1)>0.35))%la anterior menor que la presente
+            silencio(j+1)=1;%prende            
         else
-            silencio(j-1)=silencio(j);%se mantiene sobre la anterior 
+            silencio(j+1)=silencio(j);%se mantiene sobre la anterior 
         end        
     else
         silencio(j)=0;
     end
 end
-
-
 no_vocalizados=zeros(length(Z),1);
 if ((Z(1)>0.65) && (E(1))<0.6)
     no_vocalizados(1)=1;
@@ -67,7 +65,7 @@ else
     no_vocalizados(1)=0;
 end
 for k=length(Z):-1:2
-    if(Z(k)>0.3)
+    if(Z(k)>0.6)
         if((E(k)<E(k-1)) && (E(k-1)>0.45)&&(E(k-1)<0.71))
             no_vocalizados(k+1)=1;
         elseif(((E(k)>E(k-1)) && (E(k-1)<0.45))||((E(k)<E(k-1))&&(E(k-1)>0.7)))
@@ -81,15 +79,8 @@ for k=length(Z):-1:2
     
 end
 for k=1:length(Z)-1
-    if(Z(k)>0.3)
-        if((E(k)<E(k+1)) && (E(k+1)>0.45)&&(E(k+1)<0.71))
-        no_vocalizados(k+1)=1;
-        end
-    end
-    if(E(k)<0.5)
-    if ((Z(k)<Z(k+1))&&(Z(k+1)>0.3))%la anterior menor que la presente
-            silencio(k+1)=1;%prende            
-    end
+    if((E(k)<E(k+1)) && (E(k+1)>0.45)&&(E(k+1)<0.71))
+       no_vocalizados(k+1)=1;
     end
 end     
 vocalizados=zeros(length(Z),1);
@@ -99,6 +90,7 @@ vocalizados=zeros(length(Z),1);
     else
         vocalizados(k)=0;
     end
+    
 end
 figure('Name','Salida');
 hold on;
