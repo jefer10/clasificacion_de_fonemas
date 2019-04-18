@@ -34,7 +34,7 @@ vocalizados=zeros(length(Z),1);
         vocalizados(k)=0;
     end
  end
-figure('Name','Salida');
+figure('Name','Vocalizados');
 hold on;
 plot(t1,vocalizados,'Color','blue')
 plot(t,x,'Color','magenta')
@@ -43,15 +43,13 @@ ax = gca;
 ax.YLim = [0 1.2];
 %%
 T=32;
-figure
 %T=WD;
 H=0.54-0.46*cos(2*pi*((1:WL)/WL));
 r=zeros(T+1,1);
 my=[];
 mx=[];
-maximo=0;
+maximo=zeros(NW,1);
 for n=1:NW
-   n =3680
 if (vocalizados(n)==1)
        s=(x((n-1)*WD+(1:WL)));
        s=s.*H';
@@ -66,36 +64,29 @@ if (vocalizados(n)==1)
               cont=cont+1;
           end
        end
-       maximo=mx(1);
+       maximo(n)=mx(1);
        for h=2:(length(my)-1)
           if((my(h)>my(h-1))&&(my(h)>my(h+1)))
-            maximo=mx(h);
+            maximo(n)=mx(h);
             break;
           end
        end
-       if (mod(maximo,mx(1))==0)
-           maximo=mx(1);
-       end 
+       if (mod(maximo(n),mx(1))==0)
+           maximo(n)=mx(1);
+       end
+       maximo(n)=fs/maximo(n);
        %break
 end
 end
 % hold on;
-plot(s);
-figure();
+%plot(s);
+figure('Name','Frecuencia');
 hold on;
-plot(r);
-plot(mx,my);
-maximo
+subplot(2,1,1);
+maximo=log(maximo);
+plot(t1,maximo,'o');
+subplot(2,1,2);
+plot(t,x);
+%plot(r);
+%plot(mx,my);
 %plot(maximos);
-% 
-% C=fft(r);
-% longi=length(r)
-% P2 = abs(C/longi);
-% P1 = P2(1:longi/2+1);
-% P1(2:end-1) = 2*P1(2:end-1);
-% f = fs*(0:(longi/2))/longi;
-% figure
-% plot(f,P1) 
-% title('Single-Sided Amplitude Spectrum of X(t)')
-% xlabel('f (Hz)')
-% ylabel('|P1(f)|')
