@@ -52,7 +52,7 @@ maximo=zeros(NW,1);
 for n=1:NW
 if (vocalizados(n)==1)
        s=(x((n-1)*WD+(1:WL)));
-       %s=s.*H';
+       s=s.*H';
        for j=0:T
             r(j+1)=s(j+(1:(WL-T)))'*s(1:(WL-T));
        end
@@ -60,6 +60,7 @@ if (vocalizados(n)==1)
        %r=flipud(r);
        %tt=max(pks)
        valorx=find(pks==max(pks));
+       
        maximo(n)=fs/locs(valorx);
        %break
 end
@@ -74,7 +75,7 @@ subplot(2,1,1);
 maximo=maximo;
 plot(t1,maximo,'o');
 subplot(2,1,2);
-figure('name','señal')
+%figure('name','señal')
 plot(t,x);
 %plot(r);
 %plot(mx,my);
