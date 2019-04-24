@@ -45,47 +45,36 @@ ax.YLim = [0 1.2];
 T=32;
 %T=WD;
 H=0.54-0.46*cos(2*pi*((1:WL)/WL));
-r=zeros(T+1,1);
+r=zeros(WL+1,1);
 my=[];
 mx=[];
 maximo=zeros(NW,1);
 for n=1:NW
 if (vocalizados(n)==1)
        s=(x((n-1)*WD+(1:WL)));
-       s=s.*H';
+       %s=s.*H';
        for j=0:T
             r(j+1)=s(j+(1:(WL-T)))'*s(1:(WL-T));
        end
-       cont=1;
-       for k=2:T
-          if((r(k)>r(k-1))&&(r(k)>r(k+1)))
-              my(cont)=r(k);
-              mx(cont)=k;
-              cont=cont+1;
-          end
-       end
-       maximo(n)=mx(1);
-       for h=2:(length(my)-1)
-          if((my(h)>my(h-1))&&(my(h)>my(h+1)))
-            maximo(n)=mx(h);
-            break;
-          end
-       end
-       if (mod(maximo(n),mx(1))==0)
-           maximo(n)=mx(1);
-       end
-       maximo(n)=fs/maximo(n);
+       [pks,locs] = findpeaks(r);
+       %r=flipud(r);
+       %tt=max(pks)
+       valorx=find(pks==max(pks));
+       maximo(n)=fs/locs(valorx);
        %break
 end
 end
 % hold on;
-%plot(s);
+%plot(r);
 figure('Name','Frecuencia');
+%plot(r)
 hold on;
 subplot(2,1,1);
-maximo=log(maximo);
+%figure('Name','Frecuencia_final');
+maximo=maximo;
 plot(t1,maximo,'o');
 subplot(2,1,2);
+figure('name','señal')
 plot(t,x);
 %plot(r);
 %plot(mx,my);
