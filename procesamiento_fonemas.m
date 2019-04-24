@@ -49,6 +49,8 @@ r=zeros(WL+1,1);
 my=[];
 mx=[];
 maximo=zeros(NW,1);
+maximo1=zeros(NW,1);
+
 for n=1:NW
 if (vocalizados(n)==1)
        s=(x((n-1)*WD+(1:WL)));
@@ -58,9 +60,23 @@ if (vocalizados(n)==1)
        end
        [pks,locs] = findpeaks(r);
        %r=flipud(r);
-       %tt=max(pks)
        valorx=find(pks==max(pks));
        
+       if locs(valorx)< 15
+           ii=valorx;
+           tt=locs(valorx);
+           while ii<=length(locs)
+               if tt<15
+                   tt=locs(ii);
+               else
+                   valorx=ii;
+                   break;
+               end
+               ii=ii+1;
+           end
+       end
+       
+       maximo1(n)=locs(valorx);
        maximo(n)=fs/locs(valorx);
        %break
 end
@@ -77,6 +93,3 @@ plot(t1,maximo,'o');
 subplot(2,1,2);
 %figure('name','señal')
 plot(t,x);
-%plot(r);
-%plot(mx,my);
-%plot(maximos);
