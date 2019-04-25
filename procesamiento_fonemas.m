@@ -60,9 +60,15 @@ if (vocalizados(n)==1)
             r(j+1)=s(j+(1:(WL-T)))'*s(1:(WL-T));
        end
        [pks,locs] = findpeaks(r);
-       %r=flipud(r);
-       valorx=find(pks==max(pks));
        
+       %%%filtro biping
+       y=[pks locs];
+       cm=0.25*max(y(:,1));
+       y(:,1)=(abs(y(:,1))>cm).*y(:,1);
+       valorx=find(pks==max(y(:,1)));
+       %%%
+       
+       %valorx=find(pks==max(pks));
        if locs(valorx) < 15
            ii=valorx;
            tt=locs(valorx);
@@ -90,8 +96,10 @@ figure('Name','Frecuencia');
 hold on;
 subplot(2,1,1);
 %figure('Name','Frecuencia_final');
-maximo=log10(maximo);
+maximo=(maximo);
 plot(t1,maximo,'o');
+grid on
+grid minor
 subplot(2,1,2);
 %figure('name','señal')
 plot(t,x);
