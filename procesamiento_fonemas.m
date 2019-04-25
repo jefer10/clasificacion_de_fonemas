@@ -3,6 +3,7 @@ close all;
 %[x1,fs]=audioread('vozjefer.wav');
 %x=x1(:,2);
 [x,fs]=audioread('vozfemenina.wav');
+%sound(x,fs)
 L=length(x);
 t=(0:L-1)'/fs;
 x=x/(abs(max(x)));
@@ -62,16 +63,17 @@ if (vocalizados(n)==1)
        %r=flipud(r);
        valorx=find(pks==max(pks));
        
-       if locs(valorx)< 15
+       if locs(valorx) < 15
            ii=valorx;
            tt=locs(valorx);
-           while ii<=length(locs)
+           while ii<=length(locs) %el error es por el while 
                if tt<15
                    tt=locs(ii);
                else
                    valorx=ii;
                    break;
                end
+               valorx=ii;
                ii=ii+1;
            end
        end
@@ -88,7 +90,7 @@ figure('Name','Frecuencia');
 hold on;
 subplot(2,1,1);
 %figure('Name','Frecuencia_final');
-maximo=maximo;
+maximo=log10(maximo);
 plot(t1,maximo,'o');
 subplot(2,1,2);
 %figure('name','señal')
