@@ -1,8 +1,8 @@
 clear all;
 close all;
-%[x1,fs]=audioread('vozjefer.wav');
+[x,fs]=audioread('vocalesJ.wav');
 %x=x1(:,2);
-[x,fs]=audioread('vozfemenina.wav');
+%[x,fs]=audioread('vozfemenina.wav');
 %sound(x,fs)
 L=length(x);
 t=(0:L-1)'/fs;
@@ -43,7 +43,7 @@ legend('Vocalizados1','x');
 ax = gca;
 ax.YLim = [0 1.2];
 %%
-T=32;
+T=255;
 %T=WD;
 H=0.54-0.46*cos(2*pi*((1:WL)/WL));
 r=zeros(WL+1,1);
@@ -53,50 +53,60 @@ maximo=zeros(NW,1);
 maximo1=zeros(NW,1);
 
 for n=1:NW
-if (vocalizados(n)==1)
+    if (vocalizados(n)==1)
        s=(x((n-1)*WD+(1:WL)));
        s=s.*H';
        for j=0:T
             r(j+1)=s(j+(1:(WL-T)))'*s(1:(WL-T));
        end
+
        [pks,locs] = findpeaks(r);
-       
-       %%%filtro biping
-       y=[pks locs];
-       cm=0.25*max(y(:,1));
-       y(:,1)=(abs(y(:,1))>cm).*y(:,1);
-       valorx=find(pks==max(y(:,1)));
-       %%%
-       
-       %valorx=find(pks==max(pks));
-       if locs(valorx) < 15
-           ii=valorx;
-           tt=locs(valorx);
-           while ii<=length(locs) %el error es por el while 
-               if tt<15
-                   tt=locs(ii);
-               else
-                   valorx=ii;
-                   break;
-               end
-               valorx=ii;
-               ii=ii+1;
-           end
+       if n==1278
+           figure
+           plot(r)
        end
-       
+
+
+       %%%filtro haimming
+%        y=[pks locs];
+%        cm=0.25*max(y(:,1));
+%        y(:,1)=(abs(y(:,1))>cm).*y(:,1);
+%        valorx=find(pks==max(y(:,1)));
+       %%%
+
+       valorx=find(pks==max(pks));
+%        if locs(valorx) < 15
+%            ii=valorx;
+%            tt=locs(valorx);
+%            while ii<=length(locs) %el error es por el while 
+%                if tt<15
+%                    tt=locs(ii);
+%                else
+%                    valorx=ii;
+%                    break;
+%                end
+%                valorx=ii;
+%                ii=ii+1;
+%            end
+%        end
+
        maximo1(n)=locs(valorx);
        maximo(n)=fs/locs(valorx);
        %break
+    end
 end
-end
-% hold on;
-%plot(r);
+% figure('name','corelacion')
+% plot(r)
+% hold on
+% findpeaks(r)
+% text(locs+.02,pks,num2str((1:numel(pks))'))
+
 figure('Name','Frecuencia');
 %plot(r)
 hold on;
 subplot(2,1,1);
 %figure('Name','Frecuencia_final');
-maximo=(maximo);
+maximo=log10(maximo);
 plot(t1,maximo,'o');
 grid on
 grid minor
