@@ -1,12 +1,17 @@
-n=(0:19999)';
-T=[4*ones(4000,1); 40*ones(4000,1)];
-T=[T; T; 4*ones(4000,1)];
-x=cos(2*pi*n./T);
-subplot(212),plot(n,x)
+clear all;
+close all;
+[x,fs]=audioread('vozfemenina.wav');
+% n=(0:19999)';
+% T=[4*ones(4000,1); 40*ones(4000,1)];
+% T=[T; T; 4*ones(4000,1)];
+% x=cos(2*pi*n./T);
+L=length(x);
+t=(0:L-1)'/fs;
+subplot(212),plot(t,x)
 ax=gca;
 ax.YLim=[-1.5 1.5]
 l=length(x);
-wl=800;
+wl=512;
 wd=wl/4;
 nw=floor((l-wl)/wd)                                                                                                                                                                                         
 %fs=1;
