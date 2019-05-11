@@ -23,8 +23,10 @@ for i=1:nw %i en tiempo
     V(:,i)=y;
 end
 i=1:nw;
+tt=((length(x)/nw)/fs)*i;
 subplot(211);
-mesh(i,f,V);
+mesh(tt,f,V);
+%surf(tt,f,V);
 view(2)
 axis tight
 title(['WL= ',num2str(wl)])
