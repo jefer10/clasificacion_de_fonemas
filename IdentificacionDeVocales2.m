@@ -31,6 +31,7 @@ H = abs(H);
 P = pole(tf(1,[1;a]'));
 f1=fs*angle(P(1))/(2*pi);
 f2=fs*angle(P(3))/(2*pi);
+
 %%
 H = H*max(X)/max(H); %%ajuste ganancia, asumiendo los picos
 H = 20*log10(H);
