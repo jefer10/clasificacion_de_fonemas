@@ -9,7 +9,7 @@ wd=wl/4;
 nw=floor((l-wl)/wd);                                                                                                                                                                                         
 f = fs*(0:(wl/2))/wl;
 %%construccion matriz autocorrelacion y coeficientes de autocorrelacion
-p = 6; %% polos...frecuancias resonancia
+p = 4; %% polos...frecuancias resonancia
 r = zeros(p+1,1);
 for i=1:nw %i en tiempo
 %%filtro pre enfasis%%enfatizar frecuencias altas%%mirar frecuencias
