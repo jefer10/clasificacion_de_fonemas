@@ -1,5 +1,7 @@
 clc ;clear all;close all;
-[x,fs]=audioread('vozfemenina.wav');
+%[x,fs]=audioread('vozfemenina.wav');
+[x1,fs]=audioread('AEIOU.wav');
+x=x1(:,1);
 l = length(x);        % Length of signal
 t=(0:l-1)'/fs;
 wl=32;
@@ -13,6 +15,7 @@ for i=1:nw %i en tiempo
 %%filtro pre enfasis%%enfatizar frecuencias altas%%mirar frecuencias
 %%resonantes
 aux=x((i-1)*wd+(1:wl)).*hamming(wl);
+%filtro de pre-enfasis
 for n=2:wl
     aux(n)= aux(n)-0.625*aux(n-1);
 end
