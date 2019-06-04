@@ -1,12 +1,14 @@
 clc ;clear all;close all;
-%[x,fs]=audioread('vozfemenina.wav');
-[x1,fs]=audioread('AEIOU.wav');
-x=x1(:,1);
+[x,fs]=audioread('vozfemenina.wav');
+%[x1,fs]=audioread('AEIOU.wav');
+%x=x1(:,1);
 l = length(x);        % Length of signal
 t=(0:l-1)'/fs;
-wl=32;
+wl=1024;
 wd=wl/4;
-nw=floor((l-wl)/wd);                                                                                                                                                                                         
+tiempo_total=length(t);
+nw=floor((l-wl)/wd);
+tiempo_ventana=(tiempo_total/nw)/fs;
 f = fs*(0:(wl/2))/wl;
 %%construccion matriz autocorrelacion y coeficientes de autocorrelacion
 p = 6; %% polos...frecuancias resonancia
@@ -21,7 +23,7 @@ for n=2:wl
 end
 
 for k=0:p
-    r(k+1) = aux((k+1):wl)'*aux(1:(wl-k)); %%vector autocorrelacion "coseno angulo q forman las dos señales"
+    r(k+1) = aux((k+1):wl)'*aux(1:(wl-k)); %%vector autocorrelacion "coseno angulo q forman las dos seï¿½ales"
 end    
 R = r(1:p);
 r = r(2:(p+1));
@@ -45,7 +47,7 @@ subplot(211);
 mesh(tt,f,V);
 view(2)
 axis tight
-title(['WL= ',num2str(wl)])
+title(['WL= ',num2str(wl),'    ','#ventanas=',num2str(nw),'   ','tiempo por ventana=',num2str(tiempo_ventana)])
 xlabel('t[s]')
 zlabel('20*log(|P(f)|)');
 ylabel('f [Hz]')
