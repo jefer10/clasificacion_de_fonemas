@@ -8,7 +8,7 @@ for n=2:512
     x(n)= x(n)-0.625*x(n-1);
 end
 %%construccion matriz autocorrelacion y coeficientes de autocorrelacion
-p = 8; %% polos...frecuancias resonancia
+p = 6; %% polos...frecuancias resonancia
 r = zeros(p+1,1);
 
 for k=0:p
@@ -36,11 +36,14 @@ plot(f,X,'b-',f,H,'r');
 title(['Respuesta de la cavidad resonante y filtro con p =' ,num2str(p)])
 xlabel('f [Hz]')
 ylabel('20*log(|P(f)|)');
-figure('Color','White');
-zplane(1,[1;a]');
-title('Polos del sistema en el plano Z')
-xlabel('Parte Real');
-ylabel('Parte Imaginaria');
+% figure('Color','White');
+% zplane(1,[1;a]');
+% title('Polos del sistema en el plano Z')
+% xlabel('Parte Real');
+% ylabel('Parte Imaginaria');
 P = pole(tf(1,[1;a]'));
-f1=fs*angle(P(1))/(2*pi);
-f2=fs*angle(P(3))/(2*pi);
+f1=[fs*angle(P(1))/(2*pi) fs*angle(P(3))/(2*pi) fs*angle(P(5))/(2*pi)];
+f1 = sort(f1);%ordena f1
+figure('Color','White');
+hold on;
+plot(f1(1),f1(2),'*');
