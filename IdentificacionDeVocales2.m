@@ -8,7 +8,7 @@ for n=2:512
     x(n)= x(n)-0.625*x(n-1);
 end
 %%construccion matriz autocorrelacion y coeficientes de autocorrelacion
-p = 4; %% polos...frecuancias resonancia
+p = 8; %% polos...frecuancias resonancia
 r = zeros(p+1,1);
 
 for k=0:p
