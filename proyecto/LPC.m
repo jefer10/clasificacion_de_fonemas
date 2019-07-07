@@ -1,7 +1,10 @@
 clc ;clear all;close all;
-[x1,fs]=audioread('aaaas.wav');
-x=x1((133179:162401),1);
-%%plot(x1)
+[x1,fs]=audioread('eeeees.wav');
+RI=[7.565e4,1.262e5,1.888e5,2.532e5,3.184e5,4.265e5,6.001e5,8.34e5,1.037e6,1.118e6,1.187e6];
+RD=[1.037e5,1.525e5,2.21e5,2.786e5,3.534e5,4.69e5,6.789e5,9.038e5,1.076e6,1.145e6,1.235e6];
+m=length(RI);
+for y=1:m %i en tiempo
+x=x1((RI(y):RD(y)),1);
 l = length(x);        % Length of signal
 t=(0:l-1)'/fs;
 wl=128;
@@ -36,10 +39,12 @@ end
 a= -inv(R)*r; 
 V1(:,i)=a;
 end
-%%
-save BaseA.mat;%Crea el archivo de la base de datos
-BaseAObject = matfile('BaseA.mat','Writable',true);
-%%
-load('BaseA.mat','V');%carga la base de datos
-V=[V,V1];% concatena datos
-save('BaseA.mat','-append','V');%guarda nuevos datos
+if(y<2)
+    V=V1; %Se corre la primera vez
+    save BaseE.mat V;%Crea el archivo de la base de datos
+else
+    load('BaseE.mat','V');%carga la base de datos
+    V=[V,V1];% concatena datos
+    save('BaseE.mat','-append','V');%guarda nuevos datos
+end
+end
