@@ -1,5 +1,5 @@
 clc ;clear all;close all;
-[x1,fs]=audioread('A.wav');
+[x1,fs]=audioread('iiiiisss.wav');
 x=x1(:,1);
 l = length(x);        % Length of signal
 t=(0:l-1)'/fs;
