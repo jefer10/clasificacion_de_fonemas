@@ -1,8 +1,12 @@
 clc ;clear all;close all;
-<<<<<<< HEAD
+
 %x=x1(:,1);
-=======
-[x1,fs]=audioread('I.wav');
+
+[x1,fs]=audioread('U.wav');
+
+%parametros para la A
+RI=[7522e4,1.29e5,1.833e5,2.563e5,3.256e5,4.041e5,4.884e5,5.697e5,6.495e5];
+RD=[1.063e5,1.63e5,2.198e5,2.873e5,3.610e5,4.513e5,5.253e5,6.232e5,6.83e5];
 
 %Parametros para la O
 
@@ -10,16 +14,21 @@ clc ;clear all;close all;
 %RD=[1.718e5,2.281e5,3.733e5,4.6e5,6.052e5,8.5e5,1.054e6,1.19e6,1.313e6,7.20e5,2.876e5];
 
 %Parametros para la I
-RI=[8.683e4,1.391e5,2.179e5,2.976e5,3.792e5,4.756e5,5.51e5,6.837e5,7.842e5];
-RD=[1.000e5,1.600e5,2.624e5,3.311e5,4.100e5,5.150e5,5.845e5,7.117e5,8.2e5];
+%RI=[8.683e4,1.391e5,2.179e5,2.976e5,3.792e5,4.756e5,5.51e5,6.837e5,7.842e5];
+%RD=[1.000e5,1.600e5,2.624e5,3.311e5,4.100e5,5.150e5,5.845e5,7.117e5,8.2e5];
 
 %Parametros para la E
 %RI=[7.565e4,1.262e5,1.888e5,2.532e5,3.184e5,4.265e5,6.001e5,8.34e5,1.037e6,1.118e6,1.187e6];
 %RD=[1.037e5,1.525e5,2.21e5,2.786e5,3.534e5,4.69e5,6.789e5,9.038e5,1.076e6,1.145e6,1.235e6];
+
+%parametros para la U
+%RI=[1.018e5,1.855e5,3.311e5,5.137e5,6.633e5,8.787e5,9.803e5];
+%RD=[1.654e5,2.290e5,3.871e5,5.515e5,7.100e5,9.217e5,1.034e6];
+
+
 m=length(RI);
 for y=1:m %i en tiempo
 x=x1((RI(y):RD(y)),1);
->>>>>>> a577c5fac15068b95d708ed4f4ae28da95a7db8f
 l = length(x);        % Length of signal
 t=(0:l-1)'/fs;
 wl=128;
@@ -56,10 +65,10 @@ V1(:,i)=a;
 end
 if(y<2)
     V=V1; %Se corre la primera vez
-    save BaseI.mat V;%Crea el archivo de la base de datos
+    save BaseA.mat V;%Crea el archivo de la base de datos
 else
-    load('BaseI.mat','V');%carga la base de datos
+    load('BaseA.mat','V');%carga la base de datos
     V=[V,V1];% concatena datos
-    save('BaseI.mat','-append','V');%guarda nuevos datos
+    save('BaseA.mat','-append','V');%guarda nuevos datos
 end
 end
