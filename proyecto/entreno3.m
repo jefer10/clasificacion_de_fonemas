@@ -42,7 +42,7 @@ net.performFcn = 'mse';  % Mean Squared Error
 % For a list of all plot functions type: help nnplot
 net.plotFcns = {'plotperform','plottrainstate','ploterrhist', ...
     'plotregression', 'plotfit'};
-
+for I=1:5
 % Train the Network
 [net,tr] = train(net,x,t);
 
@@ -58,15 +58,15 @@ testTargets = t .* tr.testMask{1};
 trainPerformance = perform(net,trainTargets,y)
 valPerformance = perform(net,valTargets,y)
 testPerformance = perform(net,testTargets,y)
-
+end
 % View the Network
 view(net)
 
 % Plots
 % Uncomment these lines to enable various plots.
-%figure, plotperform(tr)
-%figure, plottrainstate(tr)
-%figure, ploterrhist(e)
+figure, plotperform(tr)
+figure, plottrainstate(tr)
+figure, ploterrhist(e)
 %figure, plotregression(t,y)
 %figure, plotfit(net,x,t)
 
