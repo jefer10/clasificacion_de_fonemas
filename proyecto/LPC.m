@@ -2,11 +2,11 @@ clc ;clear all;close all;
 
 %x=x1(:,1);
 
-[x1,fs]=audioread('U.wav');
+[x1,fs]=audioread('E.wav');
 
 %parametros para la A
-RI=[7522e4,1.29e5,1.833e5,2.563e5,3.256e5,4.041e5,4.884e5,5.697e5,6.495e5];
-RD=[1.063e5,1.63e5,2.198e5,2.873e5,3.610e5,4.513e5,5.253e5,6.232e5,6.83e5];
+%RI=[7522e4,1.29e5,1.833e5,2.563e5,3.256e5,4.041e5,4.884e5,5.697e5,6.495e5];
+%RD=[1.063e5,1.63e5,2.198e5,2.873e5,3.610e5,4.513e5,5.253e5,6.232e5,6.83e5];
 
 %Parametros para la O
 
@@ -22,8 +22,8 @@ RD=[1.063e5,1.63e5,2.198e5,2.873e5,3.610e5,4.513e5,5.253e5,6.232e5,6.83e5];
 %RD=[1.037e5,1.525e5,2.21e5,2.786e5,3.534e5,4.69e5,6.789e5,9.038e5,1.076e6,1.145e6,1.235e6];
 
 %parametros para la U
-%RI=[1.018e5,1.855e5,3.311e5,5.137e5,6.633e5,8.787e5,9.803e5];
-%RD=[1.654e5,2.290e5,3.871e5,5.515e5,7.100e5,9.217e5,1.034e6];
+RI=[1.018e5,1.855e5,3.311e5,5.137e5,6.633e5,8.787e5,9.803e5];
+RD=[1.654e5,2.290e5,3.871e5,5.515e5,7.100e5,9.217e5,1.034e6];
 
 
 m=length(RI);
@@ -38,9 +38,9 @@ nw=floor((l-wl)/wd);
 tiempo_ventana=(tiempo_total/nw)/fs;
 f = fs*(0:(wl/2))/wl;
 %%construccion matriz autocorrelacion y coeficientes de autocorrelacion
-p = 6; %% polos...frecuancias resonancia
+p = 12; %% polos...frecuancias resonancia
 r = zeros(p+1,1);
-V1=zeros(6,nw);
+V1=zeros(12,nw);
 for i=1:nw %i en tiempo
 %%filtro pre enfasis%%enfatizar frecuencias altas%%mirar frecuencias
 %%resonantes
@@ -65,10 +65,10 @@ V1(:,i)=a;
 end
 if(y<2)
     V=V1; %Se corre la primera vez
-    save BaseA.mat V;%Crea el archivo de la base de datos
+    save BaseU.mat V;%Crea el archivo de la base de datos
 else
-    load('BaseA.mat','V');%carga la base de datos
+    load('BaseU.mat','V');%carga la base de datos
     V=[V,V1];% concatena datos
-    save('BaseA.mat','-append','V');%guarda nuevos datos
+    save('BaseU.mat','-append','V');%guarda nuevos datos
 end
 end
