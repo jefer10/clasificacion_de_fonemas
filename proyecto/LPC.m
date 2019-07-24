@@ -2,7 +2,7 @@ clc ;clear all;close all;
 
 %x=x1(:,1);
 
-[x1,fs]=audioread('U.wav');
+[x1,fs]=audioread('E.wav');
 
 %parametros para la A
 %RI=[7522e4,1.29e5,1.833e5,2.563e5,3.256e5,4.041e5,4.884e5,5.697e5,6.495e5];
@@ -40,7 +40,11 @@ f = fs*(0:(wl/2))/wl;
 %%construccion matriz autocorrelacion y coeficientes de autocorrelacion
 p = 12; %% polos...frecuancias resonancia
 r = zeros(p+1,1);
+<<<<<<< HEAD
 V1=zeros(p,nw);
+=======
+V1=zeros(12,nw);
+>>>>>>> 7998e93b0ffbbb2cd02504e8106ac4077b1ceb0a
 for i=1:nw %i en tiempo
 %%filtro pre enfasis%%enfatizar frecuencias altas%%mirar frecuencias
 %%resonantes
@@ -65,10 +69,18 @@ V1(:,i)=a;
 end
 if(y<2)
     V=V1; %Se corre la primera vez
+<<<<<<< HEAD
     save BaseU12.mat V;%Crea el archivo de la base de datos
 else
     load('BaseU12.mat','V');%carga la base de datos
     V=[V,V1];% concatena datos
     save('BaseU12.mat','-append','V');%guarda nuevos datos
+=======
+    save BaseU.mat V;%Crea el archivo de la base de datos
+else
+    load('BaseU.mat','V');%carga la base de datos
+    V=[V,V1];% concatena datos
+    save('BaseU.mat','-append','V');%guarda nuevos datos
+>>>>>>> 7998e93b0ffbbb2cd02504e8106ac4077b1ceb0a
 end
 end
